@@ -3,7 +3,7 @@ package com.mygdx.game;
 /**
  * manikoske on 17. 3. 2017.
  */
-public enum BackgroundMapTile {
+public enum BackgroundType {
 
     WATER_SEA_DEEP(.1f, .5f, .5f, 2, 2),
     WATER_SEA_MEDIUM(.2f, 0.5f, 0.5f, 2, 1),
@@ -37,7 +37,7 @@ public enum BackgroundMapTile {
     private int textureIndexX;
     private int textureIndexY;
 
-    BackgroundMapTile(float elevation, float humidity, float temperature, int textureIndexX, int textureIndexY) {
+    BackgroundType(float elevation, float humidity, float temperature, int textureIndexX, int textureIndexY) {
         this.elevation = elevation;
         this.humidity = humidity;
         this.temperature = temperature;

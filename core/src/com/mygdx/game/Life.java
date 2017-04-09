@@ -51,6 +51,7 @@ public class Life implements ApplicationListener {
         actorLayer =
                 new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, GameManager.TILE_DIMENSIONS, GameManager.TILE_DIMENSIONS);
         gameManager.updateBackgroundLayer(backgroundLayer);
+
         layers.add(backgroundLayer);
         layers.add(actorLayer);
 
@@ -70,6 +71,7 @@ public class Life implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         renderer.setView(camera);
+        gameManager.updateActorLayer(actorLayer);
         renderer.render();
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
