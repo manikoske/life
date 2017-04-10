@@ -25,9 +25,6 @@ public class Life implements ApplicationListener {
 
     private GameManager gameManager;
 
-    private TiledMapTileLayer backgroundLayer;
-    private TiledMapTileLayer actorLayer;
-
     @Override
     public void create() {
         float w = Gdx.graphics.getWidth();
@@ -46,13 +43,8 @@ public class Life implements ApplicationListener {
         gameManager = new GameManager();
         map = new TiledMap();
         MapLayers layers = map.getLayers();
-        backgroundLayer =
-                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, GameManager.TILE_DIMENSIONS, GameManager.TILE_DIMENSIONS);
-        actorLayer =
-                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, GameManager.TILE_DIMENSIONS, GameManager.TILE_DIMENSIONS);
-
-        layers.add(backgroundLayer);
-        layers.add(actorLayer);
+        layers.add(gameManager.getBackgroundLayer());
+        layers.add(gameManager.getActorLayer());
 
         renderer = new OrthogonalTiledMapRenderer(map);
     }
@@ -72,9 +64,7 @@ public class Life implements ApplicationListener {
         camera.update();
         renderer.setView(camera);
         renderer.render();
-        gameManager.executeCycle();
-        gameManager.updateBackgroundLayer(backgroundLayer);
-        gameManager.updateActorLayer(actorLayer);
+        gameManager.update();
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
         try {
