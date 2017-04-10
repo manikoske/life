@@ -67,21 +67,22 @@ public class Life implements ApplicationListener {
     @Override
     public void render() {
         Gdx.gl.glClearColor(100f / 255f, 100f / 255f, 250f / 255f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.enableBlending();
         camera.update();
         renderer.setView(camera);
+        renderer.render();
         gameManager.executeCycle();
         gameManager.updateBackgroundLayer(backgroundLayer);
         gameManager.updateActorLayer(actorLayer);
-        renderer.render();
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
-        batch.end();
         try {
-            Thread.sleep(500);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        batch.end();
     }
 
     @Override

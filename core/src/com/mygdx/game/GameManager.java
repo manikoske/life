@@ -17,8 +17,8 @@ public class GameManager {
     public static final int HEIGHT = 500;
     public static final int TILE_DIMENSIONS = 32;
 
-    private static final String BACKGROUND_IMAGE = "dg_grounds32.gif";
-    private static final String ACTOR_IMAGE = "dg_classm32.gif";
+    private static final String BACKGROUND_IMAGE = "background.gif";
+    private static final String ACTOR_IMAGE = "actors.gif";
 
     private EnumMap<BackgroundType, StaticTiledMapTile> backgroundResources;
     private EnumMap<ActorType, StaticTiledMapTile> actorResources;
