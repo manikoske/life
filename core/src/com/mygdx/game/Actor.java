@@ -10,36 +10,37 @@ public class Actor {
 
     private static final int HISTORY_STACK_SIZE = 5;
 
-    private Deque<Coordinates> path;
+    private Deque<Coordinates> pathHistory;
     private ActorType actorType;
+    private Coordinates currentPosition;
 
     public Actor(Coordinates coordinates, ActorType actorType) {
-        this.path = new LinkedList<>();
-        this.path.add(coordinates);
+        this.currentPosition = coordinates;
+        this.pathHistory = new LinkedList<>();
         this.actorType = actorType;
     }
 
     public void move() {
-        Coordinates currentCoordinates = path.peek();
-        Coordinates futureCoordinates = new Coordinates(currentCoordinates.getX() + 1, currentCoordinates.getY() + 1);
-
-        if (path.size() == HISTORY_STACK_SIZE) {
-            path.removeLast();
-            path.add(futureCoordinates);
+        Coordinates nextPosition = new Coordinates(currentPosition.getX() + 1, currentPosition.getY() + 1);
+        if (pathHistory.size() == HISTORY_STACK_SIZE) {
+            pathHistory.removeLast();
+            pathHistory.add(currentPosition);
         } else {
-            path.add(futureCoordinates);
+            pathHistory.add(currentPosition);
         }
+        currentPosition = nextPosition;
     }
 
     public Coordinates getCurrentPosition() {
-        return path.peek();
+        return currentPosition;
     }
 
     public Coordinates getPreviousPosition() {
-        if (path.size() > 1) {
-            return path.iterator().
+        if (pathHistory.size() > 0) {
+            return pathHistory.peekLast();
+        } else {
+            return currentPosition;
         }
-        return path.peek();
     }
 
     public ActorType getActorType() {

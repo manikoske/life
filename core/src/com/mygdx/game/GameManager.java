@@ -13,8 +13,8 @@ import java.util.*;
  */
 public class GameManager {
 
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 20;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 500;
     public static final int TILE_DIMENSIONS = 32;
 
     private static final String BACKGROUND_IMAGE = "dg_grounds32.gif";
@@ -65,13 +65,13 @@ public class GameManager {
         final TextureRegion[][] actorSplitTiles =
                 TextureRegion.split(new Texture(Gdx.files.internal(ACTOR_IMAGE)), TILE_DIMENSIONS, TILE_DIMENSIONS);
         actorResources = new EnumMap<>(ActorType.class);
-        actorResources.put(ActorType.HUMAN, new StaticTiledMapTile(actorSplitTiles[0][3]));
+        actorResources.put(ActorType.HUMAN, new StaticTiledMapTile(actorSplitTiles[0][0]));
 
     }
 
     private void createActors() {
         actors = new LinkedList<>();
-        actors.add(new Actor(new Coordinates(10, 10), ActorType.HUMAN));
+        actors.add(new Actor(new Coordinates(0, 0), ActorType.HUMAN));
     }
 
     private void createBackground() {
@@ -110,7 +110,9 @@ public class GameManager {
             cell = new TiledMapTileLayer.Cell();
             cell.setTile(actorResources.get(actor.getActorType()));
             Coordinates currentPosition = actor.getCurrentPosition();
+            Coordinates previousPosition = actor.getPreviousPosition();
             actorMapLayer.setCell(currentPosition.getX(), currentPosition.getY(), cell);
+            actorMapLayer.setCell(previousPosition.getX(), previousPosition.getY(), null);
         }
     }
 
@@ -126,8 +128,6 @@ public class GameManager {
     }
 
     public void executeCycle() {
-        for (Actor actor : actors) {
-            actor.move();
-        }
+        actors.forEach(com.mygdx.game.Actor::move);
     }
 }
