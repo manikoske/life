@@ -7,8 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  */
 public class GameManager {
 
-    public static final int WIDTH = 500;
-    public static final int HEIGHT = 500;
+    public static final int WIDTH = 100;
+    public static final int HEIGHT = 100;
 
     private GameResources resources;
     private GameState state;
@@ -18,7 +18,7 @@ public class GameManager {
 
 
     public GameManager() {
-        resources = new GameResources();
+        resources = new GameResourcesAngband();
         state = new GameState(WIDTH, HEIGHT);
         initializeLayers();
 
@@ -26,9 +26,9 @@ public class GameManager {
 
     private void initializeLayers() {
         backgroundLayer =
-                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, GameResources.TILE_DIMENSIONS, GameResources.TILE_DIMENSIONS);
+                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, resources.getTileDimensions(), resources.getTileDimensions());
         actorLayer =
-                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, GameResources.TILE_DIMENSIONS, GameResources.TILE_DIMENSIONS);
+                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, resources.getTileDimensions(), resources.getTileDimensions());
 
         TiledMapTileLayer.Cell cell;
         GameTile gameTile;

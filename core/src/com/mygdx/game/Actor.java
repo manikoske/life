@@ -21,7 +21,8 @@ public class Actor {
     }
 
     public void move() {
-        Coordinates nextPosition = new Coordinates(currentPosition.getX() + 1, currentPosition.getY() + 1);
+        Coordinates nextPosition = new Coordinates(currentPosition.getX(), currentPosition.getY());
+//        Coordinates nextPosition = new Coordinates(currentPosition.getX() + 1, currentPosition.getY() + 1);
         if (pathHistory.size() == HISTORY_STACK_SIZE) {
             pathHistory.removeLast();
             pathHistory.add(currentPosition);
