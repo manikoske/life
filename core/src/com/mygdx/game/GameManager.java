@@ -7,8 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  */
 public class GameManager {
 
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 100;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 500;
 
     private GameResources resources;
     private GameState state;

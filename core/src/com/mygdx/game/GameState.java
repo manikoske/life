@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * manikoske on 11. 4. 2017.
@@ -58,6 +60,12 @@ public class GameState {
                 tiles[x][y] = new GameTile(nearest);
             }
         }
+    }
+
+    private void produceAreas() {
+        Set<Coordinates> visited = new HashSet<>();
+        List<Set<Coordinates>> result;
+
     }
 
     public void executeCycle() {
