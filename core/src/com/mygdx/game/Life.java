@@ -9,13 +9,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 
 public class Life implements ApplicationListener {
 
     static final float VIEWPORT_SIZE = 500;
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 100;
 
     private TiledMap map;
     private TiledMapRenderer renderer;
@@ -40,7 +41,7 @@ public class Life implements ApplicationListener {
         font = new BitmapFont();
         batch = new SpriteBatch();
 
-        gameManager = new GameManager();
+        gameManager = new GameManager(WIDTH, HEIGHT);
         map = new TiledMap();
         MapLayers layers = map.getLayers();
         layers.add(gameManager.getBackgroundLayer());

@@ -7,33 +7,37 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  */
 public class GameManager {
 
-    public static final int WIDTH = 500;
-    public static final int HEIGHT = 500;
-
     private GameResources resources;
     private GameState state;
+    private GameUtils utils;
+
+    private int width;
+    private int height;
 
     private TiledMapTileLayer backgroundLayer;
     private TiledMapTileLayer actorLayer;
 
 
-    public GameManager() {
+    public GameManager(int width, int height) {
+        this.width = width;
+        this.height = height;
+        utils = new GameUtils(width, height);
         resources = new GameResourcesAngband();
-        state = new GameState(WIDTH, HEIGHT);
+        state = new GameState(width, height);
         initializeLayers();
 
     }
 
     private void initializeLayers() {
         backgroundLayer =
-                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, resources.getTileDimensions(), resources.getTileDimensions());
+                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
         actorLayer =
-                new TiledMapTileLayer(GameManager.WIDTH, GameManager.HEIGHT, resources.getTileDimensions(), resources.getTileDimensions());
+                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
 
         TiledMapTileLayer.Cell cell;
         GameTile gameTile;
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 gameTile = state.getTile(x, y);
                 cell = new TiledMapTileLayer.Cell();
                 cell.setTile(resources.getBackgroundTile(gameTile.getBackgroundType()));
@@ -47,8 +51,8 @@ public class GameManager {
 
         TiledMapTileLayer.Cell cell;
         GameTile gameTile;
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 gameTile = state.getTile(x, y);
                 cell = new TiledMapTileLayer.Cell();
                 if (actorLayer.getCell(x, y) != null) {

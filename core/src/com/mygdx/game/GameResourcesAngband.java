@@ -38,7 +38,7 @@ public class GameResourcesAngband extends GameResources {
         backgroundResources.put(BackgroundType.GRASSLAND1, new StaticTiledMapTile(backgroundSplitTiles[1][2]));
         backgroundResources.put(BackgroundType.GRASSLAND2, new StaticTiledMapTile(backgroundSplitTiles[1][1]));
         backgroundResources.put(BackgroundType.GRASSLAND3, new StaticTiledMapTile(backgroundSplitTiles[1][0]));
-        backgroundResources.put(BackgroundType.RAIN_FOREST, new StaticTiledMapTile(backgroundSplitTiles[2][3]));
+        backgroundResources.put(BackgroundType.SWAMP, new StaticTiledMapTile(backgroundSplitTiles[2][3]));
         backgroundResources.put(BackgroundType.GRASSLAND_HILL, new StaticTiledMapTile(backgroundSplitTiles[10][3]));
         backgroundResources.put(BackgroundType.GRASSLAND_TREE_OAK, new StaticTiledMapTile(backgroundSplitTiles[6][0]));
         backgroundResources.put(BackgroundType.GRASSLAND_TREE_BIRCH, new StaticTiledMapTile(backgroundSplitTiles[6][3]));
@@ -47,12 +47,11 @@ public class GameResourcesAngband extends GameResources {
         backgroundResources.put(BackgroundType.DESERT_TREE_PALM, new StaticTiledMapTile(backgroundSplitTiles[7][6]));
         backgroundResources.put(BackgroundType.DESERT_TREE_CACTUS, new StaticTiledMapTile(backgroundSplitTiles[16][6]));
         backgroundResources.put(BackgroundType.SNOW_TREE_PINE, new StaticTiledMapTile(backgroundSplitTiles[10][0]));
-        backgroundResources.put(BackgroundType.RAIN_FOREST_TREE, new StaticTiledMapTile(backgroundSplitTiles[7][0]));
+        backgroundResources.put(BackgroundType.SWAMP_TREE, new StaticTiledMapTile(backgroundSplitTiles[7][0]));
         backgroundResources.put(BackgroundType.SNOW_MOUNTAIN, new StaticTiledMapTile(backgroundSplitTiles[9][6]));
         backgroundResources.put(BackgroundType.WASTELAND_MOUNTAIN, new StaticTiledMapTile(backgroundSplitTiles[9][0]));
         backgroundResources.put(BackgroundType.DESERT_MOUNTAIN, new StaticTiledMapTile(backgroundSplitTiles[13][6]));
         backgroundResources.put(BackgroundType.GRASSLAND_MOUNTAIN, new StaticTiledMapTile(backgroundSplitTiles[13][0]));
-        backgroundResources.put(BackgroundType.TAIGA, new StaticTiledMapTile(backgroundSplitTiles[4][6]));
 
         final TextureRegion[][] actorSplitTiles =
                 TextureRegion.split(new Texture(Gdx.files.internal(ACTOR_IMAGE)), TILE_DIMENSIONS, TILE_DIMENSIONS);

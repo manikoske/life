@@ -10,35 +10,34 @@ public class Actor {
 
     private static final int HISTORY_STACK_SIZE = 5;
 
-    private Deque<Coordinates> pathHistory;
+    private Deque<Integer> previousPositions;
     private ActorType actorType;
-    private Coordinates currentPosition;
+    private int currentPosition;
 
-    public Actor(Coordinates coordinates, ActorType actorType) {
-        this.currentPosition = coordinates;
-        this.pathHistory = new LinkedList<>();
+    public Actor(int currentPosition, ActorType actorType) {
+        this.currentPosition = currentPosition;
+        this.previousPositions = new LinkedList<>();
         this.actorType = actorType;
     }
 
     public void move() {
-        Coordinates nextPosition = new Coordinates(currentPosition.getX(), currentPosition.getY());
-//        Coordinates nextPosition = new Coordinates(currentPosition.getX() + 1, currentPosition.getY() + 1);
-        if (pathHistory.size() == HISTORY_STACK_SIZE) {
-            pathHistory.removeLast();
-            pathHistory.add(currentPosition);
+        int nextPosition = currentPosition;
+        if (previousPositions.size() == HISTORY_STACK_SIZE) {
+            previousPositions.removeLast();
+            previousPositions.add(currentPosition);
         } else {
-            pathHistory.add(currentPosition);
+            previousPositions.add(currentPosition);
         }
         currentPosition = nextPosition;
     }
 
-    public Coordinates getCurrentPosition() {
+    public int getCurrentPosition() {
         return currentPosition;
     }
 
-    public Coordinates getPreviousPosition() {
-        if (pathHistory.size() > 0) {
-            return pathHistory.peekLast();
+    public int getPreviousPosition() {
+        if (previousPositions.size() > 0) {
+            return previousPositions.peekLast();
         } else {
             return currentPosition;
         }

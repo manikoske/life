@@ -1,9 +1,6 @@
 package com.mygdx.game;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * manikoske on 11. 4. 2017.
@@ -29,7 +26,7 @@ public class GameState {
 
     private void createActors() {
         actors = new LinkedList<>();
-        actors.add(new Actor(new Coordinates(0, 0), ActorType.HUMAN));
+        actors.add(new Actor(0, ActorType.HUMAN));
     }
 
     private void createBackground() {
@@ -60,21 +57,72 @@ public class GameState {
                 tiles[x][y] = new GameTile(nearest);
             }
         }
+        createAreas();
     }
 
-    private void produceAreas() {
-        Set<Coordinates> visited = new HashSet<>();
-        List<Set<Coordinates>> result;
+    public void createAreas() {
+        Deque<Integer> allToProcess = new ArrayDeque<>();
+        allToProcess.push(0);
+        Deque<Set<Integer>> result = new LinkedList<>();
+        divideAreas(new HashSet<>(), result, new ArrayDeque<>(), allToProcess);
+    }
 
+    private void divideAreas(Set<Integer> visited,
+                             Deque<Set<Integer>> result,
+                             Deque<Integer> sameToProcess,
+                             Deque<Integer> allToProcess) {
+
+        while (!sameToProcess.isEmpty() || !allToProcess.isEmpty()) {
+            int centerPosition;
+            if (!sameToProcess.isEmpty()) {
+                centerPosition = sameToProcess.pop();
+                if (!visited.contains(centerPosition)) {
+                    result.peekLast().add(centerPosition);
+                } else {
+                    continue;
+                }
+            } else {
+                centerPosition = allToProcess.pop();
+                if (!visited.contains(centerPosition)) {
+                    Set<Integer> newArea = new HashSet<>();
+                    newArea.add(centerPosition);
+                    result.add(newArea);
+                } else {
+                    continue;
+                }
+            }
+            visited.add(centerPosition);
+            BackgroundType centerBackgroundType = tiles[GameUtils.get().getX(centerPosition)][GameUtils.get().getY(centerPosition)].getBackgroundType();
+            BackgroundType relativeBackgroundType;
+            BackgroundAreaType backgroundAreaType;
+            List<Integer> neighboringCoordinates = new LinkedList<>();
+            neighboringCoordinates.add(GameUtils.get().getTopMidPosition(centerPosition));
+            neighboringCoordinates.add(GameUtils.get().getBottomMidPosition(centerPosition));
+            neighboringCoordinates.add(GameUtils.get().getMidLeftPosition(centerPosition));
+            neighboringCoordinates.add(GameUtils.get().getMidRightPosition(centerPosition));
+
+            for (Integer neighboringCoordinate : neighboringCoordinates) {
+                if (GameUtils.get().isValidCoordinate(neighboringCoordinate) && !visited.contains(neighboringCoordinate)) {
+                    relativeBackgroundType =
+                            tiles[GameUtils.get().getX(neighboringCoordinate)][GameUtils.get().getY(neighboringCoordinate)].getBackgroundType();
+                    backgroundAreaType = BackgroundAreaType.getCommonBackgroundAreaType(relativeBackgroundType, centerBackgroundType);
+                    if (backgroundAreaType != BackgroundAreaType.UNDEFINED) {
+                        sameToProcess.push(neighboringCoordinate);
+                    } else {
+                        allToProcess.push(neighboringCoordinate);
+                    }
+                }
+            }
+        }
     }
 
     public void executeCycle() {
         for (Actor actor : actors) {
             actor.move();
-            Coordinates currentPosition = actor.getCurrentPosition();
-            tiles[currentPosition.getX()][currentPosition.getY()].setActor(actor);
-            Coordinates previousPosition = actor.getPreviousPosition();
-            tiles[previousPosition.getX()][previousPosition.getY()].setActor(null);
+            int currentPosition = actor.getCurrentPosition();
+            tiles[GameUtils.get().getX(currentPosition)][GameUtils.get().getY(currentPosition)].setActor(actor);
+            int previousPosition = actor.getPreviousPosition();
+            tiles[GameUtils.get().getX(previousPosition)][GameUtils.get().getY(previousPosition)].setActor(null);
         }
     }
 
