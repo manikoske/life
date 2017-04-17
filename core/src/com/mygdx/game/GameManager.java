@@ -1,31 +1,36 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * manikoske on 3. 4. 2017.
  */
-public class GameManager {
+public class GameManager implements IGameManager {
 
-    private GameResources resources;
+    private IGameResources resources;
     private GameState state;
     private GameUtils utils;
+    private List<GameLayer> layers;
 
     private int width;
     private int height;
-
-    private TiledMapTileLayer backgroundLayer;
-    private TiledMapTileLayer actorLayer;
 
 
     public GameManager(int width, int height) {
         this.width = width;
         this.height = height;
-        utils = new GameUtils(width, height);
-        resources = new GameResourcesAngband();
-        state = new GameState(width, height);
-        initializeLayers();
+        utils = new GameUtils(this);
+        resources = new GameResources();
+        state = new GameStateBuilder(this).build();
+        layers = new LinkedList<>();
+        layers.add(new BackgroundGameLayer(this));
 
+        initializeLayers();
     }
 
     private void initializeLayers() {
@@ -46,6 +51,7 @@ public class GameManager {
         }
     }
 
+    @Override
     public void update() {
         state.executeCycle();
 
@@ -66,11 +72,35 @@ public class GameManager {
         }
     }
 
-    public TiledMapTileLayer getBackgroundLayer() {
-        return backgroundLayer;
+    @Override
+    public void addLayers(TiledMap map) {
+        MapLayers layers = map.getLayers();
+        layers.add(backgroundLayer);
+        layers.add(actorLayer);
     }
 
-    public TiledMapTileLayer getActorLayer() {
-        return actorLayer;
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public GameUtils getUtils() {
+        return utils;
+    }
+
+    @Override
+    public GameState getState() {
+        return state;
+    }
+
+    @Override
+    public IGameResources getResources() {
+        return resources;
     }
 }

@@ -7,20 +7,14 @@ public class GameTile {
 
     private BackgroundType backgroundType;
     private Actor actor;
-    private BackgroundAreaType backgroundAreaType;
-    private int areaName;
+    private Area area;
 
     public GameTile(BackgroundType backgroundType) {
         this.backgroundType = backgroundType;
-        this.backgroundAreaType = BackgroundAreaType.UNDEFINED;
     }
 
     public BackgroundType getBackgroundType() {
         return backgroundType;
-    }
-
-    public void setBackgroundType(BackgroundType backgroundType) {
-        this.backgroundType = backgroundType;
     }
 
     public Actor getActor() {
@@ -31,11 +25,39 @@ public class GameTile {
         this.actor = actor;
     }
 
-    public void setBackgroundAreaType(BackgroundAreaType backgroundAreaType) {
-        this.backgroundAreaType = backgroundAreaType;
+    public Area getArea() {
+        return area;
     }
 
-    public void setAreaName(int areaName) {
-        this.areaName = areaName;
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public static class GameTileBuilder {
+
+        private BackgroundType backgroundType;
+        private Actor actor;
+        private Area area;
+
+        public GameTileBuilder(BackgroundType backgroundType) {
+            this.backgroundType = backgroundType;
+        }
+
+        public GameTileBuilder setActor(Actor actor) {
+            this.actor = actor;
+            return this;
+        }
+
+        public GameTileBuilder setArea(Area area) {
+            this.area = area;
+            return this;
+        }
+
+        public GameTile build() {
+            GameTile gameTile = new GameTile(backgroundType);
+            gameTile.setActor(actor);
+            gameTile.setArea(area);
+            return gameTile;
+        }
     }
 }

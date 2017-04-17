@@ -6,38 +6,30 @@ package com.mygdx.game;
  */
 public class GameUtils {
 
-    private static GameUtils instance;
-    private final int width;
-    private final int height;
+    IGameManager gameManager;
 
-    protected GameUtils(int width, int height) {
-        this.width = width;
-        this.height = height;
-        GameUtils.instance = this;
-    }
-
-    public static GameUtils get() {
-        return GameUtils.instance;
+    protected GameUtils(IGameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
     public int toPosition(int x, int y) {
-        return x * height + y;
+        return x * gameManager.getHeight() + y;
     }
 
     public int getX(int position) {
-        return position / height;
+        return position / gameManager.getHeight();
     }
 
     public int getY(int position) {
-        return position % height;
+        return position % gameManager.getHeight();
     }
 
     public boolean isValidCoordinate(int x, int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
+        return x >= 0 && x < gameManager.getWidth() && y >= 0 && y < gameManager.getHeight();
     }
 
     public boolean isValidCoordinate(int position) {
-        return (position >= 0 && position < width * height);
+        return (position >= 0 && position < gameManager.getWidth() * gameManager.getHeight());
     }
 
     public int getTopLeftPosition(int position) {

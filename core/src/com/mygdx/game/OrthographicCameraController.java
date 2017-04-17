@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Author: James Skemp ( jamesrskemp.com / strivinglife.com / github.com/JamesSkemp ), based upon libGDX 1.6.2.
@@ -162,6 +163,8 @@ public class OrthographicCameraController implements InputProcessor, GestureDete
         if (logActivity && (logAllActivity || logInputProcessorActivity)) {
             Gdx.app.log(TAG, "touchDown (Input) triggered. screenX " + screenX + " screenY " + screenY + " pointer " + pointer + " button " + button);
         }
+        Vector3 worldCoordinates = camera.unproject(new Vector3(screenX, screenY, 0));
+        worldCoordinates = camera.project(worldCoordinates);
         return false;
     }
 

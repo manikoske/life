@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * manikoske on 15. 4. 2017.
  */
-public enum BackgroundAreaType {
+public enum AreaType {
 
     UNDEFINED,
     SEA(BackgroundType.WATER_SEA_DEEP, BackgroundType.WATER_SEA_MEDIUM, BackgroundType.WATER_SEA_SHALLOW),
@@ -28,7 +28,7 @@ public enum BackgroundAreaType {
 
     private Collection<BackgroundType> commonTypes;
 
-    BackgroundAreaType(BackgroundType... commonTypes) {
+    AreaType(BackgroundType... commonTypes) {
         this.commonTypes = Arrays.asList(commonTypes);
     }
 
@@ -36,11 +36,18 @@ public enum BackgroundAreaType {
         return commonTypes;
     }
 
-    public static BackgroundAreaType getCommonBackgroundAreaType(BackgroundType type1, BackgroundType type2) {
-        for (BackgroundAreaType backgroundAreaType : values()) {
-            if (backgroundAreaType.getCommonTypes().contains(type1) &&
-                    backgroundAreaType.getCommonTypes().contains(type2)) {
-                return backgroundAreaType;
+    public static AreaType getAreaType(BackgroundType type) {
+        for (AreaType areaType : values()) {
+            if (areaType.getCommonTypes().contains(type)) return areaType;
+        }
+        return UNDEFINED;
+    }
+
+    public static AreaType getCommonBackgroundAreaType(BackgroundType type1, BackgroundType type2) {
+        for (AreaType areaType : values()) {
+            if (areaType.getCommonTypes().contains(type1) &&
+                    areaType.getCommonTypes().contains(type2)) {
+                return areaType;
             }
         }
         return UNDEFINED;

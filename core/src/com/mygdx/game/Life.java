@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -43,10 +42,7 @@ public class Life implements ApplicationListener {
 
         gameManager = new GameManager(WIDTH, HEIGHT);
         map = new TiledMap();
-        MapLayers layers = map.getLayers();
-        layers.add(gameManager.getBackgroundLayer());
-        layers.add(gameManager.getActorLayer());
-
+        gameManager.addLayers(map);
         renderer = new OrthogonalTiledMapRenderer(map);
     }
 
@@ -64,8 +60,8 @@ public class Life implements ApplicationListener {
         batch.enableBlending();
         camera.update();
         renderer.setView(camera);
-        renderer.render();
         gameManager.update();
+        renderer.render();
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 //        try {
