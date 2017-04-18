@@ -26,7 +26,7 @@ public class GameManager implements IGameManager {
         this.height = height;
         utils = new GameUtils(this);
         resources = new GameResources();
-        state = new GameStateBuilder(this).build();
+        state = new InitialGameStateBuilder(this).build();
         layers = new LinkedList<>();
         layers.add(new BackgroundGameLayer(this));
 
@@ -34,49 +34,49 @@ public class GameManager implements IGameManager {
     }
 
     private void initializeLayers() {
-        backgroundLayer =
-                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
-        actorLayer =
-                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
-
-        TiledMapTileLayer.Cell cell;
-        GameTile gameTile;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                gameTile = state.getTile(x, y);
-                cell = new TiledMapTileLayer.Cell();
-                cell.setTile(resources.getBackgroundTile(gameTile.getBackgroundType()));
-                backgroundLayer.setCell(x, y, cell);
-            }
-        }
+//        backgroundLayer =
+//                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
+//        actorLayer =
+//                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
+//
+//        TiledMapTileLayer.Cell cell;
+//        GameTile gameTile;
+//        for (int x = 0; x < width; x++) {
+//            for (int y = 0; y < height; y++) {
+//                gameTile = state.getTile(x, y);
+//                cell = new TiledMapTileLayer.Cell();
+//                cell.setTile(resources.getBackgroundTile(gameTile.getBackgroundType()));
+//                backgroundLayer.setCell(x, y, cell);
+//            }
+//        }
     }
 
     @Override
     public void update() {
-        state.executeCycle();
-
-        TiledMapTileLayer.Cell cell;
-        GameTile gameTile;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                gameTile = state.getTile(x, y);
-                cell = new TiledMapTileLayer.Cell();
-                if (actorLayer.getCell(x, y) != null) {
-                    actorLayer.setCell(x, y, null);
-                }
-                if (gameTile.getActor() != null) {
-                    cell.setTile(resources.getActorTile(gameTile.getActor().getActorType()));
-                    actorLayer.setCell(x, y, cell);
-                }
-            }
-        }
+//        state.executeCycle();
+//
+//        TiledMapTileLayer.Cell cell;
+//        GameTile gameTile;
+//        for (int x = 0; x < width; x++) {
+//            for (int y = 0; y < height; y++) {
+//                gameTile = state.getTile(x, y);
+//                cell = new TiledMapTileLayer.Cell();
+//                if (actorLayer.getCell(x, y) != null) {
+//                    actorLayer.setCell(x, y, null);
+//                }
+//                if (gameTile.getActor() != null) {
+//                    cell.setTile(resources.getActorTile(gameTile.getActor().getActorType()));
+//                    actorLayer.setCell(x, y, cell);
+//                }
+//            }
+//        }
     }
 
     @Override
     public void addLayers(TiledMap map) {
-        MapLayers layers = map.getLayers();
-        layers.add(backgroundLayer);
-        layers.add(actorLayer);
+//        MapLayers layers = map.getLayers();
+//        layers.add(backgroundLayer);
+//        layers.add(actorLayer);
     }
 
     @Override

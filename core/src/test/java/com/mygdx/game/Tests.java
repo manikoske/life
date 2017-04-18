@@ -44,10 +44,9 @@ public class Tests {
 
             @Override
             public GameState getState() {
-                GameStateBuilder gameStateBuilder = new GameStateBuilder(gameManager);
-                gameStateBuilder.setBackgroundCreationStrategy(new GameStateBuilder.BackgroundCreationStrategy() {
+                return new InitialGameStateBuilder(gameManager) {
                     @Override
-                    public BackgroundType[][] create(IGameManager gameManager) {
+                    protected BackgroundType[][] createBackground(IGameManager gameManager) {
                         BackgroundType[][] backgroundTypes = new BackgroundType[getWidth()][getHeight()];
                         backgroundTypes[0][0] = BackgroundType.DESERT;
                         backgroundTypes[0][1] = BackgroundType.DESERT;
@@ -63,8 +62,7 @@ public class Tests {
                         backgroundTypes[2][3] = BackgroundType.SWAMP;
                         return backgroundTypes;
                     }
-                });
-                return gameStateBuilder.build();
+                }.build();
             }
 
             @Override
