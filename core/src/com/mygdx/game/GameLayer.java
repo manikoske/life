@@ -20,4 +20,8 @@ public abstract class GameLayer {
     }
 
     protected abstract void accept(GameLayerVisitor visitor);
+
+    public TiledMapTileLayer getTiledMapTileLayer() {
+        return tiledMapTileLayer;
+    }
 }

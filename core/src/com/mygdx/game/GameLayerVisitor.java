@@ -6,5 +6,6 @@ package com.mygdx.game;
 public interface GameLayerVisitor {
 
     void visit(BackgroundGameLayer backgroundGameLayer);
+    void visit(ActorGameLayer actorGameLayer);
 
 }

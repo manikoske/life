@@ -1,9 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.maps.MapLayers;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +11,8 @@ public class GameManager implements IGameManager {
     private IGameResources resources;
     private GameState state;
     private GameUtils utils;
-    private List<GameLayer> layers;
+    private BackgroundGameLayer backgroundGameLayer;
+    private ActorGameLayer actorGameLayer;
 
     private int width;
     private int height;
@@ -27,56 +24,23 @@ public class GameManager implements IGameManager {
         utils = new GameUtils(this);
         resources = new GameResources();
         state = new InitialGameStateBuilder(this).build();
-        layers = new LinkedList<>();
-        layers.add(new BackgroundGameLayer(this));
-
-        initializeLayers();
-    }
-
-    private void initializeLayers() {
-//        backgroundLayer =
-//                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
-//        actorLayer =
-//                new TiledMapTileLayer(width, height, resources.getTileDimensions(), resources.getTileDimensions());
-//
-//        TiledMapTileLayer.Cell cell;
-//        GameTile gameTile;
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < height; y++) {
-//                gameTile = state.getTile(x, y);
-//                cell = new TiledMapTileLayer.Cell();
-//                cell.setTile(resources.getBackgroundTile(gameTile.getBackgroundType()));
-//                backgroundLayer.setCell(x, y, cell);
-//            }
-//        }
+        backgroundGameLayer = new BackgroundGameLayer(this);
+        actorGameLayer = new ActorGameLayer(this);
+        backgroundGameLayer.accept(state.getRenderingGameLayerVisitor());
     }
 
     @Override
     public void update() {
-//        state.executeCycle();
-//
-//        TiledMapTileLayer.Cell cell;
-//        GameTile gameTile;
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < height; y++) {
-//                gameTile = state.getTile(x, y);
-//                cell = new TiledMapTileLayer.Cell();
-//                if (actorLayer.getCell(x, y) != null) {
-//                    actorLayer.setCell(x, y, null);
-//                }
-//                if (gameTile.getActor() != null) {
-//                    cell.setTile(resources.getActorTile(gameTile.getActor().getActorType()));
-//                    actorLayer.setCell(x, y, cell);
-//                }
-//            }
-//        }
+        state.executeCycle();
+        actorGameLayer.accept(state.getRenderingGameLayerVisitor());
     }
 
     @Override
-    public void addLayers(TiledMap map) {
-//        MapLayers layers = map.getLayers();
-//        layers.add(backgroundLayer);
-//        layers.add(actorLayer);
+    public List<GameLayer> getGameLayers() {
+        List<GameLayer> layers = new LinkedList<>();
+        layers.add(backgroundGameLayer);
+        layers.add(actorGameLayer);
+        return layers;
     }
 
     @Override

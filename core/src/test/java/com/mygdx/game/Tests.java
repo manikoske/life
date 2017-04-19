@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 
 /**
  * manikoske on 15. 4. 2017.
@@ -23,8 +25,8 @@ public class Tests {
             }
 
             @Override
-            public void addLayers(TiledMap map) {
-
+            public List<GameLayer> getGameLayers() {
+                return null;
             }
 
             @Override

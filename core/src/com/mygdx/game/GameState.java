@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
 import java.util.*;
 
 /**
@@ -20,6 +22,37 @@ public class GameState {
         this.tiles = tiles;
         this.areas = areas;
         this.actors = actors;
+
+        renderingGameLayerVisitor = new GameLayerVisitor() {
+            @Override
+            public void visit(BackgroundGameLayer backgroundGameLayer) {
+                TiledMapTileLayer.Cell cell;
+                for (int x = 0; x < gameManager.getWidth(); x++) {
+                    for (int y = 0; y < gameManager.getHeight(); y++) {
+                        cell = new TiledMapTileLayer.Cell();
+                        cell.setTile(gameManager.getResources().getBackgroundTile(tiles[x][y].getBackgroundType()));
+                        backgroundGameLayer.getTiledMapTileLayer().setCell(x, y, cell);
+                    }
+                }
+            }
+
+            @Override
+            public void visit(ActorGameLayer actorGameLayer) {
+                TiledMapTileLayer.Cell cell;
+                for (int x = 0; x < gameManager.getWidth(); x++) {
+                    for (int y = 0; y < gameManager.getHeight(); y++) {
+                        if (actorGameLayer.getTiledMapTileLayer().getCell(x, y) != null) {
+                            actorGameLayer.getTiledMapTileLayer().setCell(x, y, null);
+                        }
+                        if (tiles[x][y].getActor() != null) {
+                            cell = new TiledMapTileLayer.Cell();
+                            cell.setTile(gameManager.getResources().getActorTile(tiles[x][y].getActor().getActorType()));
+                            actorGameLayer.getTiledMapTileLayer().setCell(x, y, cell);
+                        }
+                    }
+                }
+            }
+        };
     }
 
     public void executeCycle() {
@@ -32,15 +65,7 @@ public class GameState {
         }
     }
 
-    public GameTile getTile(int x, int y) {
-        return tiles[x][y];
-    }
-
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public List<Area> getAreas() {
-        return areas;
+    public GameLayerVisitor getRenderingGameLayerVisitor() {
+        return renderingGameLayerVisitor;
     }
 }
