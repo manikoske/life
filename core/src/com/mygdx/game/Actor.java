@@ -21,7 +21,7 @@ public class Actor {
     }
 
     public void move() {
-        int nextPosition = currentPosition;
+        int nextPosition = currentPosition + 1;
         if (previousPositions.size() == HISTORY_STACK_SIZE) {
             previousPositions.removeLast();
             previousPositions.add(currentPosition);

@@ -61,7 +61,10 @@ public class GameState {
             int currentPosition = actor.getCurrentPosition();
             tiles[gameManager.getUtils().getX(currentPosition)][gameManager.getUtils().getY(currentPosition)].setActor(actor);
             int previousPosition = actor.getPreviousPosition();
-            tiles[gameManager.getUtils().getX(previousPosition)][gameManager.getUtils().getY(previousPosition)].setActor(null);
+            if (currentPosition != previousPosition) {
+                tiles[gameManager.getUtils().getX(previousPosition)][gameManager.getUtils().getY(previousPosition)].setActor(null);
+            }
+
         }
     }
 
