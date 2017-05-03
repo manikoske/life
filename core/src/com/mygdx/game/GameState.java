@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.*;
 
@@ -11,64 +14,69 @@ public class GameState {
 
     private IGameManager gameManager;
 
-    private GameTile[][] tiles;
-    private List<Area> areas;
+    private Tile[][] tiles;
     private List<Actor> actors;
-    private GameLayerVisitor renderingGameLayerVisitor;
+    private CollisionDetection collisionDetection;
 
 
-    public GameState(IGameManager gameManager, GameTile[][] tiles, List<Area> areas, List<Actor> actors) {
+    public GameState(IGameManager gameManager, Tile[][] tiles, List<Actor> actors) {
         this.gameManager = gameManager;
         this.tiles = tiles;
-        this.areas = areas;
         this.actors = actors;
-
-        renderingGameLayerVisitor = new GameLayerVisitor() {
-            @Override
-            public void visit(BackgroundGameLayer backgroundGameLayer) {
-                TiledMapTileLayer.Cell cell;
-                for (int x = 0; x < gameManager.getWidth(); x++) {
-                    for (int y = 0; y < gameManager.getHeight(); y++) {
-                        cell = new TiledMapTileLayer.Cell();
-                        cell.setTile(gameManager.getResources().getBackgroundTile(tiles[x][y].getBackgroundType()));
-                        backgroundGameLayer.getTiledMapTileLayer().setCell(x, y, cell);
-                    }
-                }
-            }
-
-            @Override
-            public void visit(ActorGameLayer actorGameLayer) {
-                TiledMapTileLayer.Cell cell;
-                for (int x = 0; x < gameManager.getWidth(); x++) {
-                    for (int y = 0; y < gameManager.getHeight(); y++) {
-                        if (actorGameLayer.getTiledMapTileLayer().getCell(x, y) != null) {
-                            actorGameLayer.getTiledMapTileLayer().setCell(x, y, null);
-                        }
-                        if (tiles[x][y].getActor() != null) {
-                            cell = new TiledMapTileLayer.Cell();
-                            cell.setTile(gameManager.getResources().getActorTile(tiles[x][y].getActor().getActorType()));
-                            actorGameLayer.getTiledMapTileLayer().setCell(x, y, cell);
-                        }
-                    }
-                }
-            }
-        };
+        this.collisionDetection = new CollisionDetection(gameManager);
     }
 
-    public void executeCycle() {
-        for (Actor actor : actors) {
-            actor.move();
-            int currentPosition = actor.getCurrentPosition();
-            tiles[gameManager.getUtils().getX(currentPosition)][gameManager.getUtils().getY(currentPosition)].setActor(actor);
-            int previousPosition = actor.getPreviousPosition();
-            if (currentPosition != previousPosition) {
-                tiles[gameManager.getUtils().getX(previousPosition)][gameManager.getUtils().getY(previousPosition)].setActor(null);
-            }
+    public void update() {
+        collisionDetection.executeBroadPhase(actors);
+        // resolve interactions
 
+        // use brain to determine next action
+
+        // execute action
+
+        // spawn new actors if needed
+    }
+
+    public void render() {
+        ShapeRenderer shapeRenderer = gameManager.getRendering().getShapeRenderer();
+        BitmapFont bitmapFont = gameManager.getRendering().getBitmapFont();
+        SpriteBatch spriteBatch = gameManager.getRendering().getSpriteBatch();
+        int tileDimensions = gameManager.getSettings().getTileDimensions();
+
+        Tile tile;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (int x = 0; x < gameManager.getSettings().getHorizontalTileCount(); x ++) {
+            for (int y = 0; y < gameManager.getSettings().getVerticalTileCount(); y ++) {
+                tile = tiles[x][y];
+                shapeRenderer.setColor(new Color(tile.getX(), tile.getY(), tile.getZ(), 1f));
+                shapeRenderer.rect(x * tileDimensions, y * tileDimensions, tileDimensions, tileDimensions);
+            }
         }
-    }
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
+        for (int i = 0; i < gameManager.getSettings().getHorizontalTileCount(); i++) {
+            shapeRenderer.line(i * gameManager.getSettings().getTileDimensions(), 0,
+                    i * gameManager.getSettings().getTileDimensions(),
+                    gameManager.getSettings().getHeight());
+        }
+        for (int i = 0; i < gameManager.getSettings().getVerticalTileCount(); i++) {
+            shapeRenderer.line(0, i * gameManager.getSettings().getTileDimensions(),
+                    gameManager.getSettings().getWidth(),
+                    i * gameManager.getSettings().getTileDimensions());
+        }
+        shapeRenderer.end();
 
-    public GameLayerVisitor getRenderingGameLayerVisitor() {
-        return renderingGameLayerVisitor;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (Actor actor : actors) {
+            shapeRenderer.circle(actor.getX(), actor.getY(), actor.getRadius(), 200);
+        }
+        shapeRenderer.end();
+
+        spriteBatch.begin();
+        for (Actor actor : actors) {
+            bitmapFont.draw(spriteBatch, actor.getName(), actor.getX() - actor.getRadius()/ 2 , actor.getY() + actor.getRadius() + 15);
+        }
+        spriteBatch.end();
     }
 }

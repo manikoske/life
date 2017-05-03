@@ -11,17 +11,13 @@ import java.util.List;
  */
 public interface IGameManager {
 
-    public void update();
+    void executeCycle();
 
-    public List<GameLayer> getGameLayers();
+    GameUtils getUtils();
 
-    public int getWidth();
+    GameState getState();
 
-    public int getHeight();
+    IGameSettings getSettings();
 
-    public GameUtils getUtils();
-
-    public GameState getState();
-
-    public IGameResources getResources();
+    IGameRendering getRendering();
 }

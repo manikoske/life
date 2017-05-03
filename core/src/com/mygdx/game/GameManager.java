@@ -8,49 +8,22 @@ import java.util.List;
  */
 public class GameManager implements IGameManager {
 
-    private IGameResources resources;
     private GameState state;
     private GameUtils utils;
-    private BackgroundGameLayer backgroundGameLayer;
-    private ActorGameLayer actorGameLayer;
+    private IGameSettings settings;
+    private IGameRendering rendering;
 
-    private int width;
-    private int height;
-
-
-    public GameManager(int width, int height) {
-        this.width = width;
-        this.height = height;
-        utils = new GameUtils(this);
-        resources = new GameResources();
+    public GameManager(IGameSettings settings, IGameRendering rendering) {
+        this.settings = settings;
+        this.rendering = rendering;
+        utils = new GameUtils(settings);
         state = new InitialGameStateBuilder(this).build();
-        backgroundGameLayer = new BackgroundGameLayer(this);
-        actorGameLayer = new ActorGameLayer(this);
-        backgroundGameLayer.accept(state.getRenderingGameLayerVisitor());
     }
 
     @Override
-    public void update() {
-        state.executeCycle();
-        actorGameLayer.accept(state.getRenderingGameLayerVisitor());
-    }
-
-    @Override
-    public List<GameLayer> getGameLayers() {
-        List<GameLayer> layers = new LinkedList<>();
-        layers.add(backgroundGameLayer);
-        layers.add(actorGameLayer);
-        return layers;
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
+    public void executeCycle() {
+        state.update();
+        state.render();
     }
 
     @Override
@@ -64,7 +37,13 @@ public class GameManager implements IGameManager {
     }
 
     @Override
-    public IGameResources getResources() {
-        return resources;
+    public IGameSettings getSettings() {
+        return settings;
     }
+
+    @Override
+    public IGameRendering getRendering() {
+        return rendering;
+    }
+
 }

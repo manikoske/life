@@ -194,27 +194,27 @@ public class OrthographicCameraController implements InputProcessor, GestureDete
 
     private void handleInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-            camera.zoom *= 1.4;
+            camera.zoom *= 1.2;
             //If the A Key is pressed, add 0.02 to the cameraera's Zoom
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-            camera.zoom /= 1.4;
+            camera.zoom /= 1.2;
             //If the Q Key is pressed, subtract 0.02 from the cameraera's Zoom
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            camera.translate(camera.zoom * -30, 0, 0);
+            camera.translate(camera.zoom * -5, 0, 0);
             //If the LEFT Key is pressed, translate the cameraera -3 units in the X-Axis
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            camera.translate(camera.zoom * 30, 0, 0);
+            camera.translate(camera.zoom * 5, 0, 0);
             //If the RIGHT Key is pressed, translate the cameraera 3 units in the X-Axis
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            camera.translate(0, camera.zoom * -30, 0);
+            camera.translate(0, camera.zoom * -5, 0);
             //If the DOWN Key is pressed, translate the cameraera -3 units in the Y-Axis
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            camera.translate(0, camera.zoom * 30, 0);
+            camera.translate(0, camera.zoom * 5, 0);
             //If the UP Key is pressed, translate the cameraera 3 units in the Y-Axis
         }
     }

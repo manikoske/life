@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Rectangle;
+
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -8,42 +10,35 @@ import java.util.LinkedList;
  */
 public class Actor {
 
-    private static final int HISTORY_STACK_SIZE = 5;
+    private float x;
+    private float y;
+    private float radius;
+    private String name;
 
-    private Deque<Integer> previousPositions;
-    private ActorType actorType;
-    private int currentPosition;
-
-    public Actor(int currentPosition, ActorType actorType) {
-        this.currentPosition = currentPosition;
-        this.previousPositions = new LinkedList<>();
-        this.actorType = actorType;
+    public Actor(float x, float y, float radius, String name) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.name = name;
     }
 
-    public void move() {
-        int nextPosition = currentPosition + 1;
-        if (previousPositions.size() == HISTORY_STACK_SIZE) {
-            previousPositions.removeLast();
-            previousPositions.add(currentPosition);
-        } else {
-            previousPositions.add(currentPosition);
-        }
-        currentPosition = nextPosition;
+    public float getX() {
+        return x;
     }
 
-    public int getCurrentPosition() {
-        return currentPosition;
+    public float getY() {
+        return y;
     }
 
-    public int getPreviousPosition() {
-        if (previousPositions.size() > 0) {
-            return previousPositions.peekLast();
-        } else {
-            return currentPosition;
-        }
+    public float getRadius() {
+        return radius;
     }
 
-    public ActorType getActorType() {
-        return actorType;
+    public String getName() {
+        return name;
     }
+
+
+
 }
+

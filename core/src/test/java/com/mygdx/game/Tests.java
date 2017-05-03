@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -17,67 +18,82 @@ public class Tests {
 
     @Before
     public void setUp() {
-
         gameManager = new IGameManager() {
             @Override
-            public void update() {
+            public void executeCycle() {
 
-            }
-
-            @Override
-            public List<GameLayer> getGameLayers() {
-                return null;
-            }
-
-            @Override
-            public int getWidth() {
-                return 3;
-            }
-
-            @Override
-            public int getHeight() {
-                return 4;
             }
 
             @Override
             public GameUtils getUtils() {
-                return new GameUtils(gameManager);
+                return null;
             }
 
             @Override
             public GameState getState() {
-                return new InitialGameStateBuilder(gameManager) {
+                return new InitialGameStateBuilder(this) {
                     @Override
-                    protected BackgroundType[][] createBackground(IGameManager gameManager) {
-                        BackgroundType[][] backgroundTypes = new BackgroundType[getWidth()][getHeight()];
-                        backgroundTypes[0][0] = BackgroundType.DESERT;
-                        backgroundTypes[0][1] = BackgroundType.DESERT;
-                        backgroundTypes[0][2] = BackgroundType.DESERT;
-                        backgroundTypes[0][3] = BackgroundType.DESERT;
-                        backgroundTypes[1][0] = BackgroundType.DESERT;
-                        backgroundTypes[1][1] = BackgroundType.DESERT;
-                        backgroundTypes[1][2] = BackgroundType.DESERT;
-                        backgroundTypes[1][3] = BackgroundType.DESERT;
-                        backgroundTypes[2][0] = BackgroundType.DESERT;
-                        backgroundTypes[2][1] = BackgroundType.DESERT;
-                        backgroundTypes[2][2] = BackgroundType.SWAMP;
-                        backgroundTypes[2][3] = BackgroundType.SWAMP;
-                        return backgroundTypes;
+                    protected List<Actor> createActors(IGameManager gameManager) {
+                        return Collections.singletonList(new Actor(17f, 21f, 20, ""));
                     }
                 }.build();
             }
 
             @Override
-            public IGameResources getResources() {
+            public IGameSettings getSettings() {
+                return new IGameSettings() {
+                    @Override
+                    public int getTileDimensions() {
+                        return 10;
+                    }
+
+                    @Override
+                    public int getHorizontalTileCount() {
+                        return 5;
+                    }
+
+                    @Override
+                    public int getVerticalTileCount() {
+                        return 5;
+                    }
+
+                    @Override
+                    public int getWidth() {
+                        return 50;
+                    }
+
+                    @Override
+                    public int getHeight() {
+                        return 50;
+                    }
+
+                    @Override
+                    public int getMinimalActorCount() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getInitialRadius() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getInitialBroadPhaseBoxDimensions() {
+                        return 20;
+                    }
+                };
+            }
+
+            @Override
+            public IGameRendering getRendering() {
                 return null;
             }
         };
-
-
     }
 
     @Test
     public void test() {
         Assert.assertNotNull(gameManager);
+        gameManager.getState();
     }
 }
