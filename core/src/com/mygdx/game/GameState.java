@@ -27,7 +27,7 @@ public class GameState {
     }
 
     public void update() {
-        collisionDetection.executeBroadPhase(actors);
+//        collisionDetection.executeBroadPhase(actors);
         // resolve interactions
 
         // use brain to determine next action
